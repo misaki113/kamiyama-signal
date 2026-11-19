@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ヒトのデータの信号処理アルゴリズム ｜ アルゴリズム 出張授業</title>
+<style>
+  :root { --main: #0c7885; --deep: #045a64; --tint: #e1f0f3; --accent: #c1121f; --ink: #2e2e2e; --sub: #5f6b6e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+         color: var(--ink); line-height: 1.75; background: #fff; }
+  header { background: var(--deep); color: #fff; padding: 2rem 1.25rem 1.75rem; }
+  header .inner, main { max-width: 46rem; margin: 0 auto; }
+  header h1 { margin: 0 0 .4rem; font-size: 1.5rem; line-height: 1.4; }
+  header p { margin: 0; font-size: .92rem; }
+  main { padding: 1.25rem 1.25rem 3rem; }
+  h2 { color: var(--deep); font-size: 1.15rem; margin: 2.2rem 0 .6rem; padding-bottom: .25rem; border-bottom: 2px solid var(--main); }
+  h2 span { display: inline-block; min-width: 1.6em; }
+  p { margin: .5rem 0; }
+  ul.files { list-style: none; margin: .6rem 0; padding: 0; }
+  ul.files li { border-left: 4px solid var(--main); background: var(--tint); margin: .45rem 0; padding: .55rem .8rem; }
+  ol.steps { margin: .6rem 0; padding-left: 1.6rem; }
+  ol.steps li { margin: .15rem 0; }
+  ul.files li small { display: block; color: var(--sub); font-size: .84rem; line-height: 1.5; }
+  a { color: var(--deep); font-weight: 600; }
+  a.button { display: inline-block; background: var(--deep); color: #fff; text-decoration: none;
+             padding: .55rem 1rem; border-radius: 4px; margin: .3rem .4rem .3rem 0; }
+  .note { border: 1px solid var(--main); border-left-width: 4px; padding: .6rem .9rem; margin: 1rem 0; font-size: .92rem; }
+  .warn { border-color: var(--accent); }
+  details { margin: .8rem 0; border: 1px solid #c8d3d5; padding: .5rem .9rem; }
+  summary { cursor: pointer; font-weight: 600; color: var(--deep); }
+  code { background: #f1f4f5; padding: .1em .35em; border-radius: 3px; font-size: .92em; }
+  footer { max-width: 46rem; margin: 0 auto; padding: 0 1.25rem 2.5rem; color: var(--sub); font-size: .84rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="inner">
+    <h1>ヒトのデータの信号処理アルゴリズム<br>— 心電図の山を見つける</h1>
+    <p>神山まるごと高専「アルゴリズム」出張授業　2026年11月20日（金）<br>
+       東京工業高等専門学校 電気工学科　武田 美咲</p>
+  </div>
+</header>
+
+<main>
+
+<div class="note">
+  今日は、心電図のデータから山（R ピーク）を見つける手順を、試しながら考えます。まず <strong>1</strong> のボタンを押してください。<br>
+  <strong>Python の知識は要りません。</strong>数字と <code>True</code> / <code>False</code> を変えて、実行するだけです。<br>
+  このページのデータは、授業用に計算で作った<strong>合成データ</strong>です（実際の人の計測ではありません）。
+</div>
+
+<h2><span>1</span>今日のワーク</h2>
+<p>何もインストールせずに、ブラウザの中で Python を動かせます。データも入っています。最初の起動に 30 秒ほどかかります。</p>
+<p><a class="button" href="lite/lab/index.html?path=peak_work.ipynb">ピーク検出のノートブックを開く</a></p>
+<p>セルをクリックして <code>Shift + Enter</code> で実行します。上から順に進めて、結果はプリントに書き込みます。</p>
+<ol class="steps">
+  <li>しきい値を超えた点を拾う</li>
+  <li>山 1 つにつき、てっぺんを 1 点だけ選ぶ</li>
+  <li>ノイズのあるデータで試す</li>
+  <li>手ごわいデータ</li>
+</ol>
+<p data-colab>うまく開けないときは、Google Colab でも開けます（Google アカウントが必要）：
+   <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/peak_work.ipynb">Colab で開く</a></p>
+<div class="note">ブラウザの中で書いたものは、そのブラウザにだけ保存されます。残したいときは、ファイル名を右クリックして Download してください。</div>
+
+<h2><span>2</span>データ</h2>
+<p>1 のノートブックには、はじめから入っています。自分の PC で動かす人だけ、ここからダウンロードして、プログラムと同じフォルダに置いてください。</p>
+<ul class="files">
+  <li><a href="data/ecg_clean.csv" download>ecg_clean.csv</a>
+      <small>心電図。ノイズが少ない（500 Hz、30 秒）。ワーク 1・2 で使う</small></li>
+  <li><a href="data/ecg_noisy.csv" download>ecg_noisy.csv</a>
+      <small>心電図。細かいノイズと電源ノイズ（60 Hz）が乗っている。ワーク 3 で使う</small></li>
+  <li><a href="data/ecg_hard.csv" download>ecg_hard.csv</a>
+      <small>心電図。全体がゆっくり揺れる、手ごわいデータ。ワーク 4 で使う</small></li>
+  <li><a href="data/motion_reach.csv" download>motion_reach.csv</a>
+      <small>手を伸ばす運動の手先の位置（100 Hz、2 秒）。今日のワークでは使いません（数値微分のデモ用）</small></li>
+</ul>
+<p><a href="data/README.html">データの形式の説明</a></p>
+
+<h2><span>3</span>自分でコードを書きたい人</h2>
+<p>今日のワークが早く終わった人、授業のあとに自分で書いてみたい人のための資料です。</p>
+<ul class="files">
+  <li><a href="lite/lab/index.html?path=peak_code.ipynb">山を見つける関数を、自分で書くノートブックを開く</a>
+      <small>Python で書きます。読み込みとグラフは用意してあります</small></li>
+  <li><a href="handouts/worksheet.html">ワークシートを開く</a>
+      <small>Python 以外の言語で、読み込みから書きたい人向け。①読み込み → ②描画 → ③前処理 → ④R ピーク検出を、擬似コードの穴埋めで進めます（<a href="handouts/worksheet.md">Markdown 版</a>）。
+      今日のワークにあたるのは ④ です</small></li>
+  <li><a href="lite/lab/index.html?path=work.ipynb">空のノートブックを開く</a>
+      <small>Python で、読み込みから全部自分で書きたい人向け</small></li>
+</ul>
+
+<h2><span>4</span>答え合わせ用のコード</h2>
+<p>3 の資料の答えです。まず自分で考えてから開いてください。Python で書いてあります。ほかの言語の人は、手順の参考にしてください。<br>
+   山を見つける手順は ④ です。</p>
+<details>
+  <summary>答え合わせ用のコードを見る</summary>
+  <ul class="files">
+    <li>① 読み込み：
+        <a href="lite/lab/index.html?path=step1_read.ipynb">ブラウザで動かす</a> ／
+        <a href="solutions/step1_read.py" download>step1_read.py</a> ／
+        <a href="notebooks/step1_read.ipynb" download>.ipynb</a>
+        <span data-colab>／ <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/step1_read.ipynb">Colab</a></span></li>
+    <li>② 描画：
+        <a href="lite/lab/index.html?path=step2_plot.ipynb">ブラウザで動かす</a> ／
+        <a href="solutions/step2_plot.py" download>step2_plot.py</a> ／
+        <a href="notebooks/step2_plot.ipynb" download>.ipynb</a>
+        <span data-colab>／ <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/step2_plot.ipynb">Colab</a></span></li>
+    <li>③ 前処理（移動平均）：
+        <a href="lite/lab/index.html?path=step3_moving_average.ipynb">ブラウザで動かす</a> ／
+        <a href="solutions/step3_moving_average.py" download>step3_moving_average.py</a> ／
+        <a href="notebooks/step3_moving_average.ipynb" download>.ipynb</a>
+        <span data-colab>／ <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/step3_moving_average.ipynb">Colab</a></span></li>
+    <li>④ R ピーク検出と心拍数：
+        <a href="lite/lab/index.html?path=step4_rpeak.ipynb">ブラウザで動かす</a> ／
+        <a href="solutions/step4_rpeak.py" download>step4_rpeak.py</a> ／
+        <a href="notebooks/step4_rpeak.ipynb" download>.ipynb</a>
+        <span data-colab>／ <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/step4_rpeak.ipynb">Colab</a></span></li>
+    <li>⑤ 研究紹介（数値微分のデモ）：
+        <a href="lite/lab/index.html?path=step5_derivative.ipynb">ブラウザで動かす</a> ／
+        <a href="solutions/step5_derivative.py" download>step5_derivative.py</a> ／
+        <a href="notebooks/step5_derivative.ipynb" download>.ipynb</a>
+        <span data-colab>／ <a href="https://colab.research.google.com/github/misaki113/kamiyama-signal/blob/main/notebooks/step5_derivative.ipynb">Colab</a></span></li>
+  </ul>
+  <p>自分の PC で動かすには Python と <code>numpy</code>、<code>matplotlib</code> が必要です。<code>.py</code> と同じフォルダか、その中の <code>data</code> フォルダに CSV を置いてください。</p>
+</details>
+
+<h2><span>5</span>リフレクション</h2>
+<ul class="files">
+  <li><a href="handouts/reflection.html">リフレクションの設問を開く</a>
+      <small>3 問。それぞれ 1〜2 行で。コピーして使える枠があります</small></li>
+</ul>
+
+<h2><span>6</span>まとめてダウンロード</h2>
+<p>ネットワークが不安定なときのために、データ・ワークシート・コードを 1 つにまとめた zip があります（ブラウザで動かす機能は入っていません）。</p>
+<p><a class="button" href="kamiyama_signal.zip" download>kamiyama_signal.zip をダウンロード</a></p>
+
+</main>
+
+<footer>
+  質問・連絡先：東京工業高等専門学校 電気工学科 武田 美咲
+</footer>
+
+</body>
+</html>

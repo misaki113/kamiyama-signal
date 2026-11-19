@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>データについて</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      color: light-dark(#1a1a1a, #fdfdfd);
+      background-color: #fdfdfd;
+      background-color: light-dark(#fdfdfd, #1a1a1a);
+      color-scheme: light dark;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        color-scheme: light only;
+      }
+      html, body, pre, code {
+        background-color: transparent;
+      }
+      body, a, a:visited, blockquote {
+        color: black;
+      }
+      pre, code {
+        padding: 0;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a, a:visited {
+      color: inherit;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid;
+      border-color: #e6e6e6;
+      border-color: light-dark(#e6e6e6, #4c4c4c);
+      color: #606060;
+      color: light-dark(#606060, #b6b6b6);
+    }
+    code {
+      white-space: pre-wrap;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+    }
+    th {
+      border-top: 1px solid currentColor;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style>
+    /* pandoc の既定の体裁は、ダークモードで背景を黒にする。文字色はこちらで決めているので、背景も白に固定する */
+    html { color-scheme: light only; background-color: #fff; }
+    body { max-width: 48rem; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; color: #2e2e2e; line-height: 1.8;
+           font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif; }
+    h1 { color: #045a64; font-size: 1.5rem; border-bottom: 3px solid #0c7885; padding-bottom: .3rem; }
+    h2 { color: #045a64; font-size: 1.25rem; margin-top: 2.2rem; border-left: 6px solid #0c7885; padding-left: .6rem; }
+    h3 { font-size: 1.05rem; margin-top: 1.6rem; }
+    pre { background: #f4f7f8; border-left: 4px solid #0c7885; padding: .8rem 1rem; overflow-x: auto; line-height: 1.55; }
+    code { font-family: "SFMono-Regular", Consolas, "Noto Sans Mono CJK JP", monospace; font-size: .9em; }
+    :not(pre) > code { background: #f1f4f5; padding: .1em .35em; border-radius: 3px; }
+    table { border-collapse: collapse; margin: 1rem 0; }
+    th, td { border: 1px solid #97a5a8; padding: .35rem .8rem; }
+    th { background: #e1f0f3; }
+    hr { border: 0; border-top: 1px solid #97a5a8; margin: 2.2rem 0; }
+    a { color: #045a64; }
+    @media print { body { max-width: none; padding: 0; } pre { white-space: pre-wrap; } }
+  </style>
+</head>
+<body>
+<h1 id="データについて">データについて</h1>
+<p><strong>このフォルダの CSV はすべて合成データです。</strong>
+授業用にプログラム（<code>tools/generate_data.py</code>）で
+計算して作った波形で、実際の人から計測したものではありません。個人の情報は含みません。
+各ファイルの先頭にも <code># note: SYNTHETIC DATA ...</code>
+と書いてあります。</p>
+<h2 id="ファイル">ファイル</h2>
+<table>
+<thead>
+<tr>
+<th>ファイル</th>
+<th>中身</th>
+<th>サンプリング周波数</th>
+<th>長さ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ecg_clean.csv</code></td>
+<td>心電図。ノイズが少ない</td>
+<td>500 Hz</td>
+<td>30 秒（15000 点）</td>
+</tr>
+<tr>
+<td><code>ecg_noisy.csv</code></td>
+<td>心電図。細かいノイズと電源ノイズ（60 Hz）が乗っている</td>
+<td>500 Hz</td>
+<td>30 秒</td>
+</tr>
+<tr>
+<td><code>ecg_hard.csv</code></td>
+<td>心電図。基線がゆっくり揺れ、T 波が大きく、期外収縮が 1 回ある</td>
+<td>500 Hz</td>
+<td>30 秒</td>
+</tr>
+<tr>
+<td><code>motion_reach.csv</code></td>
+<td>手を 200 mm 先へ伸ばす運動（到達運動）の手先の位置</td>
+<td>100 Hz</td>
+<td>2 秒（200 点）</td>
+</tr>
+</tbody>
+</table>
+<p>心拍数はどの心電図も 60〜80 bpm の間でゆっくり変わり、平均は約 70 bpm
+です。</p>
+<h2 id="形式">形式</h2>
+<p>計測器が出力する CSV を模しています。文字コードは ASCII、改行は
+LF、区切りはカンマです。</p>
+<pre><code># device: BioAmp-Sim ECG-01            ← # で始まる行はメタデータ（キー: 値）
+# note: SYNTHETIC DATA (...)
+# condition: rest, low noise
+# recorded_at: 2026-11-20T10:00:00+09:00   ← 値の中にも &quot;:&quot; がある
+# subject: synthetic-01
+# lead: II
+# sampling_rate_hz: 500                ← サンプリング周波数はここから取り出す
+# unit: mV
+# n_samples: 15000
+index,ecg_mV,event                     ← 列名
+0,-0.0071,REC_START                    ← ここからデータ
+1,0.0055,                              ← event はほとんどの行で空
+2,-0.0042,</code></pre>
+<ul>
+<li><code>index</code>: 何番目の点か（0
+始まりの整数）。<strong>時刻の列はありません</strong>。時刻は
+<code>index / サンプリング周波数</code> で作ります</li>
+<li><code>ecg_mV</code>: 心電図の電圧
+[mV]（<code>motion_reach.csv</code> では <code>x_mm</code>,
+<code>y_mm</code>: 手先の位置 [mm]）</li>
+<li><code>event</code>:
+イベントマーカー（文字列）。<code>REC_START</code>, <code>MARK_1</code>,
+<code>MARK_2</code>, <code>REC_STOP</code>, <code>GO</code>
+など。何もない行は空</li>
+</ul>
+<h2 id="作り直すとき">作り直すとき</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> materials/R8_Kamiyama</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run <span class="at">--with</span> numpy python3 tools/generate_data.py</span></code></pre></div>
+<p>乱数の種を固定してあるので、何度実行しても同じファイルになります。
+合成時の R ピークの位置は <code>solutions/rpeak_truth/</code>
+に書き出され、解答例の検証
+（<code>tools/run_solutions.py</code>）で使います。</p>
+<h2 id="実データに差し替えるとき">実データに差し替えるとき</h2>
+<p><code>data/raw/</code>
+は実際に計測した心電図の置き場所として空けてあります（今回は使っていません）。
+実データを使う場合は、氏名・ID・計測場所など個人を特定できる情報をメタデータから除いたうえで、
+上の形式に整えてください。</p>
+</body>
+</html>

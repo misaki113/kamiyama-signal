@@ -1,0 +1,71 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2026-11-19T01:08:30.159057Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2026-11-19T01:08:30.159057Z",
+      "mimetype": "text/csv",
+      "name": "ecg_hard.csv",
+      "path": "data/ecg_hard.csv",
+      "size": 205108,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2026-11-19T01:08:30.159826Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2026-11-19T01:08:30.159826Z",
+      "mimetype": "text/csv",
+      "name": "ecg_noisy.csv",
+      "path": "data/ecg_noisy.csv",
+      "size": 205210,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2026-11-19T01:08:30.157922Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2026-11-19T01:08:30.157922Z",
+      "mimetype": "text/csv",
+      "name": "ecg_clean.csv",
+      "path": "data/ecg_clean.csv",
+      "size": 203719,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2026-11-19T01:08:30.160275Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2026-11-19T01:08:30.160275Z",
+      "mimetype": "text/csv",
+      "name": "motion_reach.csv",
+      "path": "data/motion_reach.csv",
+      "size": 4359,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2026-11-19T01:08:31.651445Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2026-11-19T01:08:31.653492Z",
+  "mimetype": null,
+  "name": "data",
+  "path": "data",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}
